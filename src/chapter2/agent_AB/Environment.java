@@ -4,14 +4,12 @@ package chapter2.agent_AB;
 public class Environment {
 	public static final Action MOVE_LEFT = new DynamicAction("LEFT");
 	public static final Action MOVE_RIGHT = new DynamicAction("RIGHT");
-	public static final Action MOVE_UP = new DynamicAction("UP");
-	public static final Action MOVE_DOWN = new DynamicAction("DOWN");
 	public static final Action SUCK_DIRT = new DynamicAction("SUCK");
 	public static final String LOCATION_A = "A";
 	public static final String LOCATION_B = "B";
 
 	public enum LocationState {
-		CLEAN, DIRTY, OBSTACLE
+		CLEAN, DIRTY
 	}
 
 	private EnvironmentState envState;

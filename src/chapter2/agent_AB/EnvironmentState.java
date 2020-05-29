@@ -14,20 +14,6 @@ public class EnvironmentState {
 		this.state.put(Environment.LOCATION_B, locBState);
 	}
 
-	public String getKeyState(int i, int j) {
-		return i + "," + j;
-	}
-
-	public EnvironmentState(Environment.LocationState[][] grid) {
-
-		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid[i].length; j++) {
-				String id = getKeyState(i, j);
-				this.state.put(id, grid[i][j]);
-			}
-		}
-	}
-
 	public void setAgentLocation(String location) {
 		this.agentLocation = location;
 	}
