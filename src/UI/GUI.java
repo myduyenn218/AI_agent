@@ -10,6 +10,7 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -66,21 +67,28 @@ public class GUI extends JFrame {
 		}
 
 		shuffle(grid);
-		env = new Environment(grid, dirt);
-		Agent agent = new Agent(new AgentProgram());
 
-		try {
-			env.addAgent(agent, EnvironmentState.getKeyState(0, 0));
+		boolean flagAgent = false;
 
-			JPanel floorPanel = env.getCurrentState().getFloorPanel();
-			JPanel main = new JPanel();
-			main.add(floorPanel);
-			getContentPane().add(main, BorderLayout.CENTER);
-			validate();
-		} catch (WrongPlaceException e) {
-			System.out.println("Agent can't be put on obstacle");
-			e.printStackTrace();
+		while (!flagAgent) {
+			try {
+				env = new Environment(grid, dirt);
+				Agent agent = new Agent(new AgentProgram());
+				env.addAgent(agent, EnvironmentState.getKeyState(0, 0));
+				flagAgent = true;
+			} catch (WrongPlaceException e) {
+				System.out.println("Agent can't be put on obstacle");
+				shuffle(grid);
+//				e.printStackTrace();
+			}
 		}
+		JPanel floorPanel = env.getCurrentState().getStatePanel();
+		JPanel main = new JPanel();
+
+		main.add(floorPanel);
+
+		getContentPane().add(main, BorderLayout.CENTER);
+		validate();
 	}
 
 	public GUI() {
@@ -100,7 +108,7 @@ public class GUI extends JFrame {
 		tfObsRate = new JTextField(5);
 
 		JTextField result = new JTextField(5);
-		JButton enter = new JButton("OK");
+		JButton enter = new JButton("Start");
 		result.setEnabled(false);
 
 		menuPanel.add(mLable);
@@ -121,33 +129,50 @@ public class GUI extends JFrame {
 		setVisible(true);
 
 		enter.addActionListener(new ActionListener() {
+			boolean flag = false;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enter.setEnabled(false);
-				start();
+				Thread th;
 
-				Thread th = new Thread(new Runnable() {
+				if (enter.getText().equals("Start")) {
+					flag = false;
+					enter.setText("Stop");
+					start();
 
-					@Override
-					public void run() {
-						while (true) {
-							env.step();
-							try {
-								Thread.sleep(100);
-								if (env.isDone()) {
-									break;
+					th = new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+							while (true) {
+								env.step();
+
+								try {
+									Thread.sleep(100);
+									if (env.isDone()) {
+										JOptionPane.showMessageDialog(null, "Successfully Done Activity", "Success",
+												JOptionPane.INFORMATION_MESSAGE);
+										enter.setText("Start");
+										break;
+									} else if (flag) {
+										break;
+									}
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
 								}
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
 							}
-						}
 
-					}
-				});
-				th.start();
+						}
+					});
+					th.start();
+				} else {
+					enter.setText("Start");
+					flag = true;
+
+				}
 			}
+
 		});
 
 	}

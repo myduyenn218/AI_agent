@@ -38,6 +38,7 @@ public class Environment {
 		System.out.println(location);
 
 		if (envState.getLocationState(location) == LocationState.OBSTACLE) {
+
 			throw new WrongPlaceException();
 		}
 
@@ -57,7 +58,7 @@ public class Environment {
 
 			envState.setLocationState(agentLocation, LocationState.CLEAN);
 			envState.setCurrentDirt(envState.getCurrentDirt() - 1);
-
+			envState.setAgentPoint(envState.getAgentPoint() + 500);
 		} else {
 			String nextLocation = null;
 
@@ -72,11 +73,12 @@ public class Environment {
 			}
 
 			if (nextLocation != null && envState.getLocationState(nextLocation) != LocationState.OBSTACLE) {
-
 				envState.setAgentLocation(nextLocation);
+				envState.setAgentPoint(envState.getAgentPoint() - 100);
 			}
 		}
 
+		envState.setAgentPoint(envState.getAgentPoint() - 10);
 		return envState;
 	}
 
@@ -118,7 +120,7 @@ public class Environment {
 
 	public void step() {
 		envState.display();
-		
+
 		String agentLocation = this.envState.getAgentLocation();
 		Action anAction = agent.execute(getPerceptSeenBy());
 		EnvironmentState es = executeAction(anAction);
@@ -149,7 +151,7 @@ public class Environment {
 
 		while (!isDone) {
 			System.out.println("step: " + i++);
-			
+
 			step();
 			System.out.println("-------------------------");
 		}

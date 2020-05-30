@@ -27,7 +27,7 @@ public class FloorPanel extends JPanel {
 		this.envState = envState;
 		this.width = width;
 		this.height = height;
-		setPreferredSize(new Dimension(width * CELLWIDTH+1, height * CELLWIDTH+1));
+		setPreferredSize(new Dimension(width * CELLWIDTH + 1, height * CELLWIDTH + 1));
 
 	}
 
