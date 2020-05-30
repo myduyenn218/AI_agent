@@ -28,6 +28,10 @@ public class Environment {
 		envState = new EnvironmentState(grid, totalDirt);
 	}
 
+	public boolean isDone() {
+		return isDone;
+	}
+
 	// add an agent into the enviroment
 	public void addAgent(Agent agent, String location) throws WrongPlaceException {
 		// TODO
@@ -113,7 +117,8 @@ public class Environment {
 	}
 
 	public void step() {
-		envState.display(m, n);
+		envState.display();
+		
 		String agentLocation = this.envState.getAgentLocation();
 		Action anAction = agent.execute(getPerceptSeenBy());
 		EnvironmentState es = executeAction(anAction);
@@ -124,7 +129,7 @@ public class Environment {
 
 		if (envState.getCurrentDirt() == 0)
 			isDone = true;// if both squares are clean, then agent do not need to do any action
-		es.display(m, n);
+		es.display();
 	}
 
 	public void step(int n) {
@@ -144,6 +149,7 @@ public class Environment {
 
 		while (!isDone) {
 			System.out.println("step: " + i++);
+			
 			step();
 			System.out.println("-------------------------");
 		}

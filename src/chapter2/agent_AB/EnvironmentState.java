@@ -3,12 +3,14 @@ package chapter2.agent_AB;
 import java.util.HashMap;
 import java.util.Map;
 
+import UI.FloorPanel;
 import chapter2.agent_AB.Environment.LocationState;
 
 public class EnvironmentState {
 	private Map<String, Environment.LocationState> state = new HashMap<String, Environment.LocationState>();
 	private String agentLocation = null;//
 	private int currentDirt;
+	private FloorPanel floorPanel;
 
 	public static String getKeyState(int i, int j) {
 		return i + "," + j;
@@ -16,6 +18,7 @@ public class EnvironmentState {
 
 	public EnvironmentState(Environment.LocationState[][] grid, int currentDirt) {
 		this.currentDirt = currentDirt;
+		floorPanel = new FloorPanel(this, grid.length, grid[0].length);
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[i].length; j++) {
 				String id = getKeyState(i, j);
@@ -50,24 +53,30 @@ public class EnvironmentState {
 		this.state.put(location, locationState);
 	}
 
-	public void display(int m, int n) {
-		System.out.println("Environment state: \n\tCurrent Dirt" + currentDirt + "\n");
+	public FloorPanel getFloorPanel() {
+		return floorPanel;
+	}
 
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-//				System.out.print(EnvironmentState.getKeyState(i, j) + " " +agentLocation);
-				if (EnvironmentState.getKeyState(i, j).equals(agentLocation)) {
-					System.out.print("AGENT\t");
-				} else if (state.get(EnvironmentState.getKeyState(i, j)) == LocationState.OBSTACLE) {
-					System.out.print("OBSTA\t");
-				}
-				else {
-					System.out.print(state.get(EnvironmentState.getKeyState(i, j)) + "\t");
-				}
+	public void display() {
+//		System.out.println("Environment state: \n\tCurrent Dirt" + currentDirt + "\n");
 
-			}
-			System.out.println();
-		}
+		floorPanel.repaint();
+	
+//		
+//		for (int i = 0; i < m; i++) {
+//			for (int j = 0; j < n; j++) {
+////				System.out.print(EnvironmentState.getKeyState(i, j) + " " +agentLocation);
+//				if (EnvironmentState.getKeyState(i, j).equals(agentLocation)) {
+//					System.out.print("AGENT\t");
+//				} else if (state.get(EnvironmentState.getKeyState(i, j)) == LocationState.OBSTACLE) {
+//					System.out.print("OBSTA\t");
+//				} else {
+//					System.out.print(state.get(EnvironmentState.getKeyState(i, j)) + "\t");
+//				}
+//
+//			}
+//			System.out.println();
+//		}
 
 	}
 }
